@@ -19,21 +19,35 @@ TicTacToeBoard::TicTacToeBoard()
 **/
 Piece TicTacToeBoard::toggleTurn()
 {
-  return Invalid;
+	if(turn == X){
+		turn = O;
+	}
+	else{
+		turn = X;
+	}
+	return turn;
 }
 
 /**
  * Places the piece of the current turn on the board, returns what
- * piece is placed, and toggles which Piece's turn it is. placePiece does 
+ * piece is placed, and toggles which Piece's turn it is. placePiece does
  * NOT allow to place a piece in a location where there is already a piece.
- * In that case, placePiece just returns what is already at that location. 
+ * In that case, placePiece just returns what is already at that location.
  * Out of bounds coordinates return the Piece Invalid value. When the game
  * is over, no more pieces can be placed so attempting to place a piece
  * should neither change the board nor change whose turn it is.
-**/ 
+**/
 Piece TicTacToeBoard::placePiece(int row, int column)
 {
-  return Invalid;
+  if(board[row][column] == ' '){
+    board[row][column] = turn;
+    toggleTurn();
+    return board[row][column];
+  }
+  else{
+    toggleTurn();
+    return board[row][column];
+  }
 }
 
 /**
@@ -42,7 +56,7 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 **/
 Piece TicTacToeBoard::getPiece(int row, int column)
 {
-  return Invalid;
+  return board[row][column];
 }
 
 /**
@@ -51,5 +65,32 @@ Piece TicTacToeBoard::getPiece(int row, int column)
 **/
 Piece TicTacToeBoard::getWinner()
 {
-  return Invalid;
+
+  for(int i = 0; i < 3; i++){
+    if(board[i][0] == board[i][1] && board[i][0] == board[i][2] && board[i][1] != ' '){
+      return board[i][0];
+    }
+    if(board[0][i] == board[1][i] && board[0][i] == board[2][i] && board[0][i] != ' '){
+      return board[0][i];
+    }
+  }
+
+  if(board[0][0] == board[1][1] && board[0][0] == board[2][2] && board[1][1] != ' '){
+    return board[1][1];
+  }
+  if(board[0][2] == board[1][1] && board[0][2] == board[2][0] && board[1][1] != ' '){
+    return board[1][1];
+  }
+
+  Piece result = Blank;
+
+  for(int i = 0; i < 3; i++){
+    for(int j = 0; j < 3; j++){
+      if(board[i][j] == ' '){
+        result = Invalid;
+      }
+    }
+  }
+
+  return result;
 }
